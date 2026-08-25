@@ -2,28 +2,30 @@
 
 ## Introduction
 
-A 16-bit binary to 5-digit BCD converter implemented with a 16-stage pipeline using the Double Dabble (Shift-and-Add-3) algorithm.
+This project implements a **16-bit binary to 5-digit BCD converter** using Verilog.
+
+The converter is based on the **Double Dabble (Shift-and-Add-3)** algorithm and is implemented as a **16-stage pipeline**, allowing new input data to be accepted every clock cycle.
 
 ## Features
 
 - 16-bit unsigned binary input
-- 5-digit BCD output
+- 20-bit BCD output
 - Double Dabble algorithm
-- 16-stage pipeline
+- 16-stage pipeline architecture
 - Supports continuous input
-- `in_valid / out_valid` pipeline alignment
-- Supports bubbles in the input stream
+- Supports bubbles through `in_valid`
+- `in_valid` and `out_valid` pipeline alignment
 
-## Architecture
+## Interface
 
-Each pipeline stage performs one round of:
+```verilog
+module bin2bcd_pipeline(
+    input  wire        clk,
+    input  wire        rst_n,
 
-1. Check each BCD digit
-2. Add 3 if the digit is greater than or equal to 5
-3. Shift the 36-bit intermediate data left by one bit
+    input  wire [15:0] bin_in,
+    input  wire        in_valid,
 
-The 36-bit intermediate data consists of:
-
-```text
-[35:16] : 20-bit BCD field
-[15:0]  : 16-bit binary field
+    output reg  [19:0] bcd_out,
+    output reg         out_valid
+);
