@@ -1,0 +1,29 @@
+# BIN2BCD Pipeline
+
+## Introduction
+
+A 16-bit binary to 5-digit BCD converter implemented with a 16-stage pipeline using the Double Dabble (Shift-and-Add-3) algorithm.
+
+## Features
+
+- 16-bit unsigned binary input
+- 5-digit BCD output
+- Double Dabble algorithm
+- 16-stage pipeline
+- Supports continuous input
+- `in_valid / out_valid` pipeline alignment
+- Supports bubbles in the input stream
+
+## Architecture
+
+Each pipeline stage performs one round of:
+
+1. Check each BCD digit
+2. Add 3 if the digit is greater than or equal to 5
+3. Shift the 36-bit intermediate data left by one bit
+
+The 36-bit intermediate data consists of:
+
+```text
+[35:16] : 20-bit BCD field
+[15:0]  : 16-bit binary field
